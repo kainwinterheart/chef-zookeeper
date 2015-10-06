@@ -13,7 +13,7 @@ default[:zookeeper][:java_opts] = "-Xms128M -Xmx512M"
 default[:zookeeper][:log_dir]     = "/var/log/zookeeper"
 
 # One of: 'upstart', 'runit', 'exhibitor', 'sysv'
-default[:zookeeper][:service_style] = 'runit'
+default[:zookeeper][:service_style] = 'upstart'
 
 default[:zookeeper][:config] = {
   clientPort: 2181,

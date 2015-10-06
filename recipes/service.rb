@@ -44,15 +44,16 @@ when 'upstart'
   end
 when 'runit'
   # runit_service does not install runit itself
-  include_recipe "runit"
+  #include_recipe "runit"
 
-  runit_service 'zookeeper' do
-    default_logger true
-    options(
-      exec: executable_path
-    )
-    action [:enable, :start]
-  end
+  #runit_service 'zookeeper' do
+  #  default_logger true
+  #  options(
+  #    exec: executable_path
+  #  )
+  #  action [:enable, :start]
+  #end
+  throw 'runit support is disabled'
 when 'sysv'
   template '/etc/default/zookeeper' do
     source 'environment-defaults.erb'
