@@ -1,7 +1,8 @@
-# recipes/service.rb
 #
-# Copyright 2013, Simple Finance Technology Corp.
-# Copyright 2016, EverTrue, Inc.
+# Cookbook Name:: zookeeper
+# Spec:: default
+#
+# Copyright (c) 2016 EverTrue
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-zookeeper_service 'zookeeper' do
-  service_style node['zookeeper']['service_style']
-  install_dir   "#{node['zookeeper']['install_dir']}/zookeeper"
-  username      node['zookeeper']['user']
+require 'spec_helper'
+
+describe 'zookeeper::default' do
+  context 'When all attributes are default, on Ubuntu 14.04' do
+    let(:chef_run) do
+      runner = ChefSpec::ServerRunner.new
+      runner.converge described_recipe
+    end
+    it 'converges successfully' do
+      chef_run # This should not raise an error
+    end
+  end
 end

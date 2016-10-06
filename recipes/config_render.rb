@@ -1,6 +1,7 @@
 # recipes/config_render.rb
 #
 # Copyright 2013, Simple Finance Technology Corp.
+# Copyright 2016, EverTrue, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +17,11 @@
 
 # set the config path based on default attributes
 # render out our config
-zookeeper_config "#{node[:zookeeper][:config_dir]}/#{node[:zookeeper][:conf_file]}" do
-  config node[:zookeeper][:config]
-  user   node[:zookeeper][:user]
-  action :render
+zookeeper_config 'zookeeper config' do
+  conf_dir  node['zookeeper']['config_dir']
+  conf_file node['zookeeper']['conf_file']
+  config    node['zookeeper']['config']
+  log_dir   node['zookeeper']['log_dir']
+  user      node['zookeeper']['user']
+  env_vars  node['zookeeper']['env_vars']
 end

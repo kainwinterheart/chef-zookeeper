@@ -1,6 +1,7 @@
 # recipes/install.rb
 #
 # Copyright 2014, Simple Finance Technology Corp.
+# Copyright 2016, EverTrue, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,39 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if node[:zookeeper][:use_java_cookbook] == true
-  include_recipe 'java::default'
-else
-  Chef::Log.info("Assuming you've provided your own Java")
+zookeeper node['zookeeper']['version'] do
+  username          node['zookeeper']['user']
+  user_home         node['zookeeper']['user_home']
+  mirror            node['zookeeper']['mirror']
+  checksum          node['zookeeper']['checksum']
+  install_dir       node['zookeeper']['install_dir']
+  log_dir           node['zookeeper']['log_dir']
+  data_dir          node['zookeeper']['config']['dataDir']
+  use_java_cookbook node['zookeeper']['use_java_cookbook']
 end
-
-case node['platform_family']
-when 'debian'
-  node.set['apt']['compile_time_update'] = true
-
-  include_recipe 'apt::default'
-end
-
-# build-essential is required to build the zookeeper and json gems
-node.override['build-essential']['compile_time'] = true
-include_recipe 'build-essential::default'
-
-zookeeper node[:zookeeper][:version] do
-  user        node[:zookeeper][:user]
-  mirror      node[:zookeeper][:mirror]
-  checksum    node[:zookeeper][:checksum]
-  install_dir node[:zookeeper][:install_dir]
-  log_dir     node[:zookeeper][:log_dir]
-  data_dir    node[:zookeeper][:config][:dataDir]
-  action      :install
-end
-
-# Add optional Zookeeper environment vars
-if node[:zookeeper][:env_vars]
-  file "#{node[:zookeeper][:config_dir]}/zookeeper-env.sh" do
-    owner node[:zookeeper][:user]
-    content exports_config node[:zookeeper][:env_vars]
-  end
-end
-
-#
